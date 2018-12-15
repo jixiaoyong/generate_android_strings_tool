@@ -21,13 +21,10 @@ public class Main {
         File projectDir = new File(intputDirPath);
         File[] projects = projectDir.listFiles();
 
-        for (int i = 0; i < projects.length; i++) {
-            String projectNameStr = projects[i].getName();
-            System.out.println("*************开始解析************* " + projectNameStr);
+            String projectNameStr = "project";
 
             writeToExcel(outputExcelPath.replace(projectName, projectNameStr),
                     readXmls(inputXmlDirPath.replace(projectName, projectNameStr)));
-        }
 
 //        writeToExcel(outputExcelPath, readXmls(inputXmlDirPath));
 //        ExcelUtil.readExcel(outputExcelPath, outputXmlDirPath);

@@ -1,6 +1,6 @@
 package frame;
 
-import utils.ExcelUtil;
+import utils.TranslateUtil;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -40,7 +40,7 @@ public class XmlToExcelFrame extends JFrame implements ActionListener {
         homeButton.addActionListener(this);
         this.add(homeButton);
 
-        openFileLabel = new JLabel("XML:");
+        openFileLabel = new JLabel("res目录:");
         openFileLabel.setBounds(60, 90, 40, 40);
 
         openFileTextField = new JTextField(200);
@@ -78,41 +78,49 @@ public class XmlToExcelFrame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == homeButton){
-            MainFrame frame=new MainFrame();
+        if (e.getSource() == homeButton) {
+            MainFrame frame = new MainFrame();
             XmlToExcelFrame.this.dispose();
-        }else if (e.getSource() == openFileButton) {
-            selectXml();
+        } else if (e.getSource() == openFileButton) {
+            selectXmls();
         } else if (e.getSource() == outputFileButton) {
             selectFile();
         } else if (e.getSource() == generatorButton) {
             if (openFile == null) {
-                JOptionPane.showMessageDialog(null, "请选择strings.xml", "提示", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "请选择res目录", "提示", JOptionPane.WARNING_MESSAGE);
                 return;
             }
             if (outputFile == null) {
                 JOptionPane.showMessageDialog(null, "请选择Excel生成位置", "提示", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            try {
-                ExcelUtil excelUtil = new ExcelUtil();
-                excelUtil.writXLSXExcel(openFile, outputFile);
-                JOptionPane.showMessageDialog(null, "生成完毕", "提示", JOptionPane.WARNING_MESSAGE);
-            } catch (IOException e1) {
-                JOptionPane.showMessageDialog(null, "很抱歉，发生错误！", "提示", JOptionPane.WARNING_MESSAGE);
-                e1.printStackTrace();
-            }
+            TranslateUtil.writeToExcel(outputFile.getAbsolutePath() + File.separator + "output.xlsx",
+                    TranslateUtil.readXmls(openFile.getAbsolutePath()));
+
+            JOptionPane.showMessageDialog(null, "生成完毕", "提示", JOptionPane.WARNING_MESSAGE);
         }
     }
 
-    private File selectXml() {
+//    private File selectXml() {
+//        JFileChooser chooser = new JFileChooser();
+//        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+//        chooser.setAcceptAllFileFilterUsed(false);
+//        chooser.addChoosableFileFilter(new XmlFilter());
+//        chooser.showDialog(new JLabel(), "选择");
+//        File file = chooser.getSelectedFile();
+//        if (file != null && file.isFile()) {
+//            openFile = file;
+//            openFileTextField.setText(file.getAbsolutePath());
+//        }
+//        return null;
+//    }
+
+    private File selectXmls() {
         JFileChooser chooser = new JFileChooser();
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.setAcceptAllFileFilterUsed(false);
-        chooser.addChoosableFileFilter(new XmlFilter());
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         chooser.showDialog(new JLabel(), "选择");
-        File file = chooser.getSelectedFile();
-        if (file != null && file.isFile()) {
+        File file = chooser.getCurrentDirectory();
+        if (file != null && file.isDirectory()) {
             openFile = file;
             openFileTextField.setText(file.getAbsolutePath());
         }
@@ -123,7 +131,7 @@ public class XmlToExcelFrame extends JFrame implements ActionListener {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         chooser.showDialog(new JLabel(), "选择");
-        File file = chooser.getSelectedFile();
+        File file = chooser.getCurrentDirectory();
         if (file != null && file.isDirectory()) {
             outputFile = file;
             outputFileTextField.setText(file.getAbsolutePath());

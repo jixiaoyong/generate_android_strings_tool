@@ -302,7 +302,7 @@ public class ExcelUtil {
                 if (!outputDir.exists()) {
                     outputDir.mkdirs();
                 }
-                File xmlFile = new File(outputDir.getAbsolutePath() + File.separator + "string.xml");
+                File xmlFile = new File(outputDir.getAbsolutePath() + File.separator + "strings.xml");
                 if (!xmlFile.exists()) {
                     xmlFile.createNewFile();
                 }

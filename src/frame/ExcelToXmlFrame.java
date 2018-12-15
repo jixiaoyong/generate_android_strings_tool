@@ -2,6 +2,7 @@ package frame;
 
 
 import utils.ExcelUtil;
+import utils.TranslateUtil;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -95,17 +96,23 @@ public class ExcelToXmlFrame extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null, "请选择XML生成位置", "提示", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            try {
-                ExcelUtil excelUtil = new ExcelUtil();
-                excelUtil.readExcel(openFile, outputFile);
+//            try {
+                //开始Excel to XML
+//                ExcelUtil excelUtil = new ExcelUtil();
+//                excelUtil.readExcel(openFile, outputFile);
+                TranslateUtil.readExcel(openFile.getAbsolutePath(),outputFile.getAbsolutePath());
                 JOptionPane.showMessageDialog(null, "生成完毕", "提示", JOptionPane.WARNING_MESSAGE);
-            } catch (IOException e1) {
-                JOptionPane.showMessageDialog(null, "很抱歉，发生错误！", "提示", JOptionPane.WARNING_MESSAGE);
-                e1.printStackTrace();
-            }
+//            } catch (IOException e1) {
+//                JOptionPane.showMessageDialog(null, "很抱歉，发生错误！", "提示", JOptionPane.WARNING_MESSAGE);
+//                e1.printStackTrace();
+//            }
         }
     }
 
+    /**
+     * 打开Excel文件
+     * @return 打开的文件
+     */
     private File selectExcel() {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -116,18 +123,24 @@ public class ExcelToXmlFrame extends JFrame implements ActionListener {
         if (file != null && file.isFile()) {
             openFile = file;
             openFileTextField.setText(file.getAbsolutePath());
+            return file;
         }
         return null;
     }
 
+    /**
+     * 选择xml输出目录
+     * @return 输出的目录
+     */
     private File selectFile() {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         chooser.showDialog(new JLabel(), "选择");
-        File file = chooser.getSelectedFile();
+        File file = chooser.getCurrentDirectory();
         if (file != null && file.isDirectory()) {
             outputFile = file;
             outputFileTextField.setText(file.getAbsolutePath());
+            return outputFile;
         }
         return null;
     }
